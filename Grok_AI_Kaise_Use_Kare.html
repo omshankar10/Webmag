@@ -1,0 +1,166 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grok AI को कैसे उपयोग करें?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            background-color: #1a73e8;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        main {
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+            font-size: 20px;
+            margin-top: 0;
+        }
+        p {
+            margin: 10px 0;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-radius: 0 0 5px 5px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Grok AI को कैसे उपयोग करें?</h1>
+        </header>
+        <main>
+            <h2>परिचय</h2>
+            <p>Grok AI, xAI द्वारा विकसित एक उन्नत कृत्रिम बुद्धिमत्ता उपकरण है, जो उपयोगकर्ताओं को विभिन्न सवालों के जवाब देने, जानकारी खोजने और कार्यों को आसान बनाने में मदद करता है। इसे उपयोग करना सरल और सुविधाजनक है। नीचे Grok AI को उपयोग करने के तरीके और इसकी विशेषताओं के बारे में विस्तृत जानकारी दी गई है:</p>
+
+            <h2>Grok AI तक कैसे पहुँचें?</h2>
+            <p>Grok 3 को आप निम्नलिखित प्लेटफॉर्म्स पर मुफ्त में उपयोग कर सकते हैं, हालांकि इसमें सीमित उपयोग कोटा है:</p>
+            <ul>
+                <li><strong>वेबसाइट</strong>: <a href="https://grok.com">grok.com</a> पर जाकर आप Grok AI का उपयोग कर सकते हैं। यहाँ आपको साइन-इन करने की आवश्यकता हो सकती है।</li>
+                <li><strong>X प्लेटफॉर्म</strong>: <a href="https://x.com">X.com</a> पर Grok 3 उपलब्ध है। आप X वेबसाइट या X के iOS और Android ऐप के माध्यम से इसका उपयोग कर सकते हैं।</li>
+                <li><strong>मोबाइल ऐप्स</strong>: Grok के अपने iOS और Android ऐप्स डाउनलोड करें, जो ऐप स्टोर और गूगल प्ले स्टोर पर उपलब्ध हैं।</li>
+            </ul>
+            <p><strong>नोट</strong>: अगर आप अधिक उपयोग कोटा चाहते हैं, तो आप <a href="https://x.ai/grok">grok.com</a> पर SuperGrok सब्सक्रिप्शन ले सकते हैं या <a href="https://x.com">X.com</a> पर प्रीमियम सब्सक्रिप्शन चुन सकते हैं। कीमत और सब्सक्रिप्शन की जानकारी के लिए कृपया <a href="https://x.ai/grok">https://x.ai/grok</a> (SuperGrok के लिए) या <a href="https://help.x.com/en/using-x/x-premium">https://help.x.com/en/using-x/x-premium</a> (X प्रीमियम के लिए) देखें।</p>
+
+            <h2>Grok AI की मुख्य विशेषताएँ</h2>
+            <ol>
+                <li><strong>प्रश्नों के जवाब</strong>: Grok 3 किसी भी विषय पर आपके सवालों के जवाब दे सकता है, जैसे विज्ञान, इतिहास, तकनीक, या सामान्य ज्ञान। यह हिंदी सहित कई भाषाओं में जवाब देता है।</li>
+                <li><strong>वॉइस मोड</strong>: Grok 3 का वॉइस मोड केवल Grok के iOS और Android ऐप्स पर उपलब्ध है। आप बोलकर सवाल पूछ सकते हैं और जवाब सुन सकते हैं।</li>
+                <li><strong>थिंक मोड</strong>: इस मोड में Grok 3 आपके सवाल पर गहराई से विचार करता है और अधिक सटीक जवाब देता है। यह मोड केवल तभी सक्रिय होता है जब आप UI में "थिंक" बटन दबाते हैं।</li>
+                <li><strong>डीपसर्च मोड</strong>: इस मोड में Grok 3 वेब पर जानकारी खोजता है और विश्लेषण के बाद जवाब देता है। इसे सक्रिय करने के लिए UI में "डीपसर्च" बटन दबाएँ।</li>
+                <li><strong>API सेवा</strong>: अगर आप डेवलपर हैं, तो Grok 3 की API सेवा का उपयोग कर सकते हैं। इसके लिए <a href="https://x.ai/api">https://x.ai/api</a> पर जाएँ।</li>
+            </ol>
+            <p><strong>नोट</strong>: Grok 3 का BigBrain मोड अभी सार्वजनिक रूप से उपलब्ध नहीं है और न ही यह SuperGrok या X प्रीमियम सब्सक्रिप्शन में शामिल है।</p>
+
+            <h2>Grok AI का उपयोग कैसे करें?</h2>
+            <ol>
+                <li><strong>प्लेटफॉर्म चुनें</strong>: सबसे पहले, वह प्लेटफॉर्म चुनें जिस पर आप Grok 3 का उपयोग करना चाहते हैं (grok.com, X.com, या मोबाइल ऐप्स)।</li>
+                <li><strong>साइन-इन करें</strong>: यदि आवश्यक हो, तो अपने खाते में साइन-इन करें। मुफ्त उपयोग के लिए आपको साइन-इन करना पड़ सकता है।</li>
+                <li><strong>सवाल पूछें</strong>: Grok 3 के इंटरफेस में अपना सवाल टाइप करें या वॉइस मोड में बोलकर पूछें। उदाहरण के लिए, "भारत की राजधानी क्या है?" या "मुझे एक निबंध लिखने में मदद करें।"</li>
+                <li><strong>विशेष मोड का उपयोग</strong>: यदि आप गहराई से जवाब चाहते हैं, तो थिंक मोड या डीपसर्च मोड का उपयोग करें।</li>
+                <li><strong>जवाब प्राप्त करें</strong>: Grok 3 तुरंत आपके सवाल का जवाब देगा। जवाब को आप पढ़ सकते हैं या वॉइस मोड में सुन सकते हैं।</li>
+            </ol>
+
+            <h2>उपयोग के कुछ उदाहरण</h2>
+            <ul>
+                <li><strong>शिक्षा</strong>: "मुझे न्यूटन के गति के नियम समझाओ।" Grok 3 इसे सरल हिंदी में समझाएगा।</li>
+                <li><strong>रोजमर्रा के सवाल</strong>: "आज दिल्ली का मौसम कैसा है?" (डीपसर्च मोड में यह नवीनतम जानकारी देगा।)</li>
+                <li><strong>रचनात्मक कार्य</strong>: "मुझे एक कहानी लिखें।" Grok 3 आपके लिए एक रचनात्मक कहानी बना सकता है।</li>
+                <li><strong>तकनीकी सहायता</strong>: "पायथन में लूप कैसे काम करता है?" Grok 3 कोड के साथ उदाहरण देगा।</li>
+            </ul>
+
+            <h2>महत्वपूर्ण बातें</h2>
+            <ul>
+                <li><strong>उपयोग कोटा</strong>: मुफ्त प्लान में उपयोग की सीमा होती है। अधिक उपयोग के लिए सब्सक्रिप्शन लें।</li>
+                <li><strong>Grok 3.5 उपलब्धता</strong>: Grok 3.5 अभी किसी भी उपयोगकर्ता के लिए उपलब्ध नहीं है, भले ही कोई वेबसाइट या X पोस्ट इसके बारे में दावा करे।</li>
+                <li><strong>API के लिए</strong>: डेवलपर्स API का उपयोग करने के लिए <a href="https://x.ai/api">https://x.ai/api</a> पर जानकारी प्राप्त करें।</li>
+                <li><strong>मेमोरी सुविधा</strong>: Grok 3 आपकी बातचीत को याद रखता है। अगर आप चाहते हैं कि कोई बातचीत भुलाई जाए, तो सेटिंग्स में "Data Controls" सेक्शन में जाएँ और मेमोरी सुविधा को अक्षम करें या विशिष्ट चैट को हटाएँ।</li>
+            </ul>
+
+            <h2>निष्कर्ष</h2>
+            <p>Grok 3 एक शक्तिशाली और उपयोगकर्ता-अनुकूल AI उपकरण है, जिसे आप विभिन्न कार्यों के लिए उपयोग कर सकते हैं। यह शिक्षा, रोजमर्रा के सवालों, और रचनात्मक कार्यों में आपकी मदद कर सकता है। इसे आजमाएँ और अपनी आवश्यकताओं के अनुसार इसका उपयोग करें। अधिक जानकारी के लिए <a href="https://x.ai/grok">https://x.ai/grok</a> पर जाएँ।</p>
+        </main>
+        <footer>
+            <p>अधिक जानकारी के लिए <a href="https://x.ai/grok">https://x.ai/grok</a> पर जाएँ।</p>
+            <p>© 2025 xAI. सभी अधिकार सुरक्षित।</p>
+        </footer>
+    </div>
+</body>
+</html>
